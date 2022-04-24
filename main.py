@@ -10,6 +10,8 @@ def translate(request):
         return random.choice(data[request])
     elif request.title() in data:
         return random.choice(data[request.title()])
+    elif request.upper() in data:
+        return random.choice(data[request.upper()])
     elif len(get_close_matches(request, data.keys())) > 0:
         yn = input(
             f'Did you mean "{get_close_matches(request, data.keys())[0]}" instead?\n'
@@ -17,13 +19,13 @@ def translate(request):
         if yn == 'y':
             return random.choice(data[get_close_matches(request, data.keys())[0]])
         elif yn == 'n':
-            global new_query
+            new_query = input(
+                'The word does not exist.\n'
+                'You can leave us(Just enter "Q")\n'
+                'either You can try to enter your word again: '
+            )
             try:
-                new_query = input(
-                    'The word does not exist.\n'
-                    'You can leave us(Just enter "Q")\n'
-                    'either You can try to enter your word again: '
-                ).lower()
+                new_query.lower() or new_query.upper()
             except:
                 new_query.title()
             if new_query == "q":
