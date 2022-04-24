@@ -6,12 +6,10 @@ data = json.load(open('data.json'))
 
 
 def translate(request):
-    try:
-        request
-    except:
-        request.lower()
     if request in data:
         return random.choice(data[request])
+    elif request.title() in data:
+        return random.choice(data[request.title()])
     elif len(get_close_matches(request, data.keys())) > 0:
         yn = input(
             f'Did you mean "{get_close_matches(request, data.keys())[0]}" instead?\n'
@@ -25,9 +23,9 @@ def translate(request):
                     'The word does not exist.\n'
                     'You can leave us(Just enter "Q")\n'
                     'either You can try to enter your word again: '
-                )
+                ).lower()
             except:
-                new_query.lower()
+                new_query.title()
             if new_query == "q":
                 return "Goodbye"
             else:
